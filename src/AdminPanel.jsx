@@ -18,8 +18,8 @@ async function uploadVimeoFile(file,token,onProgress){
   if(!patch.ok)throw new Error('Vimeo upload failed. Please retry with the same file.');
   offset=Number(patch.headers.get('Upload-Offset')||end); onProgress(Math.min(100,Math.round(offset/file.size*100)));
  }
- const match=String(session.uri).match(/\\/videos\\/(\\d+)/); if(!match)throw new Error('Vimeo returned an invalid video ID.');
- return 'https://player.vimeo.com/video/'+match[1];
+ const id=String(session.uri).match(/[0-9]+$/)?.[0]; if(!id)throw new Error('Vimeo returned an invalid video ID.');
+ return 'https://player.vimeo.com/video/'+id;
 }
 
 export default function AdminPanel({open,onClose}){
