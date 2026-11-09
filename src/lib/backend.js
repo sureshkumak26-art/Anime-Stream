@@ -35,3 +35,10 @@ export async function importAniListLinks(token,anime){
  const r=await fetch(url+'/rest/v1/episodes',{method:'POST',headers:{...headers(token),'Prefer':'return=minimal'},body:JSON.stringify(rows)});
  const data=await r.json().catch(()=>null);if(!r.ok)throw new Error(data?.message||'Could not import provider links');return rows.length;
 }
+
+export async function listPublicEpisodes(animeId){
+ if(!backendReady)return [];
+ const r=await fetch(url+'/rest/v1/episodes?anime_id=eq.'+encodeURIComponent(animeId)+'&status=eq.published&select=*&order=episode_number.asc',{headers:headers()});
+ if(!r.ok)return [];
+ return await r.json();
+}
