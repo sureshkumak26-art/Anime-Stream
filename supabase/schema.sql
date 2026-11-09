@@ -56,3 +56,8 @@ for delete to authenticated using (
 -- After creating your first admin user in Supabase Authentication > Users,
 -- replace the UUID below with that user's actual ID and run:
 -- insert into public.admin_users(user_id) values ('YOUR-AUTH-USER-UUID');
+
+-- API privileges are still constrained by the RLS policies above.
+grant select on public.admin_users to authenticated;
+grant select on public.episodes to anon, authenticated;
+grant insert, update, delete on public.episodes to authenticated;
