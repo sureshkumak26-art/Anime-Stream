@@ -25,6 +25,7 @@ create table if not exists public.episodes (
   created_at timestamptz not null default now()
 );
 create index if not exists episodes_publication_idx on public.episodes(status, anime_id, episode_number);
+create unique index if not exists episodes_source_unique on public.episodes(anime_id, episode_number, source_type, video_url);
 alter table public.episodes enable row level security;
 drop policy if exists "Public can read published episodes" on public.episodes;
 create policy "Public can read published episodes" on public.episodes
