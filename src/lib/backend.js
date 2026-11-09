@@ -32,7 +32,7 @@ export async function importAniListLinks(token,anime){
   status:'published',rights_confirmed:false
  }));
  if(!rows.length)return 0;
- const r=await fetch(url+'/rest/v1/episodes',{method:'POST',headers:{...headers(token),'Prefer':'return=minimal'},body:JSON.stringify(rows)});
+ const r=await fetch(url+'/rest/v1/episodes?on_conflict=anime_id,episode_number,source_type,video_url',{method:'POST',headers:{...headers(token),'Prefer':'resolution=ignore-duplicates,return=minimal'},body:JSON.stringify(rows)});
  const data=await r.json().catch(()=>null);if(!r.ok)throw new Error(data?.message||'Could not import provider links');return rows.length;
 }
 
