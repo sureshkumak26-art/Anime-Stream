@@ -51,3 +51,20 @@ AniList metadata and listed streaming links can be discovered automatically when
 npm run build
 ```
 Cloudflare Worker deploys from the connected GitHub branch after each push. The current deployment uses the Vite build output in `dist`.
+
+## Premium OTT blueprint (in progress)
+
+The `feature/premium-ott-blueprint` branch adds:
+- First-launch profile picker and profile-specific local watchlists.
+- An additive Supabase migration for account-owned profiles, watch progress, saved anime, anime catalog metadata, and multiple episode servers.
+- Admin controls to add/remove multiple HTTPS embed servers for each published episode.
+- Viewer-side server choices, with iframe embeds and direct MP4/HLS playback handling.
+
+### Apply the OTT database migration
+After the original `supabase/schema.sql` has been applied, run the complete `supabase/premium_ott_migration.sql` file in Supabase SQL Editor. This adds the new tables and row-level security policies without dropping the existing episode publishing setup.
+
+### Current implementation boundaries
+- Profile selection and per-profile My List are currently stored in the browser on that device. The new Supabase profile/watch-progress tables are ready for account-linked synchronization, but end-user account sign-in and cross-device sync still need to be wired into the app.
+- The current public catalog continues to use AniList metadata. The new admin-managed anime catalog table is a backend foundation; full catalog CRUD and merging it into discovery are still pending.
+- Streaming server URLs must be authorized HTTPS embed URLs or direct video URLs you own or have permission to distribute. Some third-party hosts may block iframe embedding or fullscreen; the player cannot override restrictions imposed by those hosts.
+- No unauthorized scraping, copying, or automatic redistribution of copyrighted episodes is included.
