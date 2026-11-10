@@ -38,7 +38,7 @@ export async function importAniListLinks(token,anime){
 
 export async function listPublicEpisodes(animeId){
  if(!backendReady)return [];
- const r=await fetch(url+'/rest/v1/episodes?anime_id=eq.'+encodeURIComponent(animeId)+'&status=eq.published&select=*&order=episode_number.asc',{headers:headers()});
+ const r=await fetch(url+'/rest/v1/episodes?anime_id=eq.'+encodeURIComponent(animeId)+'&status=eq.published&select=*,episode_servers(id,server_name,embed_url,sort_order)&order=episode_number.asc',{headers:headers()});
  if(!r.ok)return [];
  return await r.json();
 }
