@@ -42,3 +42,16 @@ export async function listPublicEpisodes(animeId){
  if(!r.ok)return [];
  return await r.json();
 }
+
+export async function listEpisodeServers(token,episodeId){
+ const r=await fetch(url+'/rest/v1/episode_servers?episode_id=eq.'+encodeURIComponent(episodeId)+'&select=*&order=sort_order.asc',{headers:headers(token)});
+ const data=await r.json();if(!r.ok)throw new Error(data.message||'Could not load streaming servers');return data;
+}
+export async function saveEpisodeServer(token,server){
+ const r=await fetch(url+'/rest/v1/episode_servers',{method:'POST',headers:{...headers(token),'Prefer':'return=representation'},body:JSON.stringify(server)});
+ const data=await r.json();if(!r.ok)throw new Error(data.message||'Could not save streaming server');return data;
+}
+export async function removeEpisodeServer(token,id){
+ const r=await fetch(url+'/rest/v1/episode_servers?id=eq.'+encodeURIComponent(id),{method:'DELETE',headers:headers(token)});
+ if(!r.ok)throw new Error('Could not delete streaming server');
+}
